@@ -66,52 +66,22 @@
 <body>
     <div class="container">
         <h1>高二七班班級聯絡簿登錄器</h1>
-        <table>
+        <table id = "content">
             <tr>
                 <th>指令</th>
-                <td class="options">
-                    <div class="option" data-value="add">新增內容</div>
-                    <div class="option" data-value="show">顯示內容</div>
-                    <div class="option" data-value="show_id">顯示資料庫</div>
-                    <div class="option" data-value="change">更改內容</div>
-                    <div class="option" data-value="remove">刪除內容</div>
-                    <div class="option" data-value="add_title">更改標題</div>
+                <td class="options" >
+                    <div class="option command" data-value="add">新增內容</div>
+                    <div class="option command" data-value="show">顯示內容</div>
+                    <div class="option command" data-value="show_id">顯示資料庫</div>
+                    <div class="option command" data-value="change">更改內容</div>
+                    <div class="option command" data-value="remove">刪除內容</div>
+                    <div class="option command" data-value="submit">上傳</div>
                 </td>
             </tr>
             <tr>
-                <th>類別</th>
-                <td class="options">
-                    <div class="option" data-value="0">功課</div>
-                    <div class="option" data-value="1">小考</div>
-                    <div class="option" data-value="2">週考或段考</div>
-                    <div class="option" data-value="3">提醒事項</div>
-                    <div class="option" data-value="4">連結</div>
-                </td>
-            </tr>
-            <tr>
-                <th>科目</th>
-                <td class="options">
-                    <div class="option" data-value="chi">國文</div>
-                    <div class="option" data-value="eng">英文</div>
-                    <div class="option" data-value="mat">數學</div>
-                    <div class="option" data-value="phy">物理</div>
-                    <div class="option" data-value="che">化學</div>
-                    <div class="option" data-value="bio">生物</div>
-                    <div class="option" data-value="geos">地科</div>
-                    <div class="option" data-value="his">歷史</div>
-                    <div class="option" data-value="geo">地理</div>
-                    <div class="option" data-value="cit">公民</div>
-                    <div class="option" data-value="art">美術</div>
-                    <div class="option" data-value="hrt">班導</div>
-                    <div class="option" data-value="coa">輔導</div>
-                    <div class="option" data-value="me">資訊股長提醒</div>
-                    <div class="option" data-value="pe">體育</div>
-                </td>
-            </tr>
-            <tr>
-                <th>內容</th>
-                <td class="options">
-                    <input id="input1" type="text">
+                <th>聯絡簿內容</th>
+                <td>
+                    <textarea id = "display"></textarea>
                 </td>
             </tr>
         </table>
