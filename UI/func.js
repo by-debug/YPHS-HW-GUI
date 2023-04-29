@@ -5,6 +5,8 @@ var dateinput = '<th>日期</th> <td class="options"> <input id="input1" type="d
 var range = "<th>範圍</th> <td class='options'> 從id=<input id='input1' type='text'> 到id=<input id='input2' type='text'> </td>";
 var password = '<th>密碼</th> <td class="options"> <input id="input2" type="password"> </td>';
 var title = '<th>標題</th> <td class="options"> <input id="input1" type="text" value="today"> </td>';
+var id = '<th>id</th> <td class="options"> <input id="input2" type="text"> </td>';
+var display = ''
 
 function update() {
     let options = document.querySelectorAll(".option");
@@ -57,11 +59,20 @@ for (let command of commands) {
             content.appendChild(tr);
             tr.innerHTML = dateinput;
         }
-        else if (command.dataset.value == "change" || command.dataset.value == "remove")
+        else if (command.dataset.value == "remove")
         {
             tr = document.createElement("tr");
             content.appendChild(tr);
             tr.innerHTML = range;
+        }
+        else if (command.dataset.value == "change")
+        {
+            tr = document.createElement("tr");
+            content.appendChild(tr);
+            tr.innerHTML = id;
+            tr = document.createElement("tr");
+            content.appendChild(tr);
+            tr.innerHTML = textinput;
         }
         else
         {
@@ -77,36 +88,81 @@ for (let command of commands) {
 }
 
 // 提交表單
-function submitForm() {
-let formData = {};
-let rows = document.querySelectorAll("tr");
-for (let row of rows) {
-    let title = row.querySelector("th").innerText;
-    let options = row.querySelectorAll(".option");
-    for (let option of options) {
-        if (option.classList.contains("selected")) {
-            formData[title] = option.dataset.value;
-            break;
+async function submitForm() {
+    let formData = {};
+    let rows = document.querySelectorAll("tr");
+    for (let row of rows) {
+        let title = row.querySelector("th").innerText;
+        let options = row.querySelectorAll(".option");
+        for (let option of options) {
+            if (option.classList.contains("selected")) {
+                formData[title] = option.dataset.value;
+                break;
+            }
         }
-    }
-    if (title == "內容")
-    {
-        input1 =  document.getElementById("input1");
-        if  (input1.value != "")
+        if (title == "內容" || title == "標題")
         {
-            formData[title] = document.getElementById("input1").value;
+            input1 =  document.getElementById("input1");
+            if  (input1.value != "")
+            {
+                formData[title] = input1.value;
+            }
+        }
+        if (title == "日期")
+        {
+            input1 =  document.getElementById("input1");
+            if  (input1.value != "")
+            {
+                formData[title] = input1.value.replaceAll('-', '/');
+            }
+        }
+        if (title == "密碼")
+        {
+            input2 =  document.getElementById("input2");
+            if  (input2.value != "")
+            {
+                formData[title] =  input2.value;
+            }
+        }
+        if (title == "id")
+        {
+            input2 =  document.getElementById("input2");
+            if  (input2.value != "")
+            {
+                formData[title] =  input2.value;
+            }
+        }
+        if (title == "範圍")
+        {
+            input1 =  document.getElementById("input1");
+            input2 =  document.getElementById("input2");
+            if  (input1.value != "" && input2.value != "")
+            {
+                formData[title] = input1.value + ' ' + input2.value;
+            }
+        }
+        // 如果該行沒有被選中的選項，則提示使用者並返回
+        if (!formData[title]) {
+            if (title == "聯絡簿內容")
+                continue;
+            if (title != "內容" && title != "密碼" && title != "日期" && title != "範圍")
+                alert("請選擇" + title);
+            else
+                alert("請填寫"+title);
+            return;
         }
     }
-    // 如果該行沒有被選中的選項，則提示使用者並返回
-    if (!formData[title]) {
-        if (title != "內容")
-            alert("請選擇" + title);
-        else
-            alert("請填寫"+title);
-        return;
+    send = ''
+    for (var key in formData) 
+    {
+        send += formData[key] + ' ';
     }
+    result = await eel.receive(send)();
+    area = document.getElementById("display");
+    if (result != 'finished!')
+        area.value = result;
 }
-}
+
 
 // 定義一個函數，用來取消所有選項的選取狀態
 function cancelSelection() {
