@@ -59,7 +59,7 @@ for (let command of commands) {
             content.appendChild(tr);
             tr.innerHTML = dateinput;
         }
-        else if (command.dataset.value == "remove")
+        else if (command.dataset.value == "remove" || command.dataset.value == "add_old")
         {
             tr = document.createElement("tr");
             content.appendChild(tr);
@@ -159,8 +159,10 @@ async function submitForm() {
     }
     result = await eel.receive(send)();
     area = document.getElementById("display");
-    if (result != 'finished!')
-        area.value = result;
+    if (result == 'finished!')
+        result = await eel.receive("show today")();
+    area.value = result;
+    cancelSelection();
 }
 
 
@@ -172,4 +174,9 @@ function cancelSelection() {
     }
     let input1 = document.getElementById("input1");
     input1.value = "";
+    var content = document.getElementById("content");
+    while(content.rows.length > 2)
+    {
+        content.deleteRow(2);
+    }
 }
